@@ -1,0 +1,36 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 300,
+  "height": 550,
+  "params": [{"name": "countschool", "select": "point"}],
+  "data": {
+    "url": "https://raw.githubusercontent.com/Oatsawaa/choropleth-map-6470328021/main/BMA_ADMIN_SUB_DISTRICT.json",
+    "format": {"type": "topojson", "feature": "BMA_SUB_DISTRICT_6470328021"}
+  },
+  "transform": [
+    {
+      "lookup": "properties.DISTRICT_I",
+      "from": {
+        "data": {
+          "url": "https://raw.githubusercontent.com/Oatsawaa/choropleth-map-6470328021/main/bec_school_new.csv"
+        },
+        "key": "DCODE",
+        "fields": ["num_stu"]
+      }
+    }
+  ],
+  "projection": {"type": "mercator", "scale": 49, "translate": [180, 200]},
+  "mark": "geoshape",
+  "encoding": {
+    "color": {
+      "condition": {
+        "param": "countschool",
+        "field": "num_stu",
+        "type": "quantitative"
+      },
+      "value": "grey"
+    },
+    "opacity": {"condition": {"param": "countschool", "value": 1}, "value": 0.5}
+  },
+  "config": {}
+}
